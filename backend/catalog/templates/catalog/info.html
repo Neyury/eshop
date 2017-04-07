@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %} Информация {% endblock %}
+
+{% block head%}
+    <meta property="og:title" content="Белье и колготки оптом / Информация и контакты" />
+    <meta name="robots" content="all"/>
+    <meta name="Keywords" content="Покупка оптом, опт, белье, колготки, информация, контакты"/>
+{% endblock %}
+
+{% block meta %}
+
+{% endblock %}
+
+{% block sidebar %}
+            <aside class="sidebar tabs-box">
+                <div class="tab-nav sticky-block block" data-open-hash="#wholesale">
+                    <div>
+                        <div class="title">Навигация</div>
+                        <ul>
+                            <li><a data-scroll-to="1" class="scroll-to">Условия сотрудничества</a></li>
+                            <li><a data-scroll-to="2" class="scroll-to">Необходимые документы</a></li>
+                            <li><a data-scroll-to="3" class="scroll-to">Как заказать в первый раз</a></li>
+                            <li><a data-scroll-to="4" class="scroll-to">Доставка</a></li>
+                            <li><a data-scroll-to="5" class="scroll-to">Оплата</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="tab-nav sticky-block block" data-open-hash="#contacts">
+                    <div>
+                        <div class="title">Навигация</div>
+                        <ul>
+                            <li><a data-scroll-to="111" class="scroll-to" >Контакты</a></li>
+                            <li><a data-scroll-to="222" class="scroll-to">О компании</a></li>
+                            <li><a data-scroll-to="333" class="scroll-to">Расположение офиса</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+{% endblock sidebar%}
+
+
+
+
+
+
+{% block breadcrumbs %}
+    <div class="container flex">
+        <ul class="breadcrumbs">
+            <li><a href="{% url 'catalog:index' %}">Главная</a></li>
+            <li>Информация</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+        <div class="tabs-box">
+            <ul class="nav-tabs">
+                <li data-open-tab="#wholesale">Оптовая покупка</li>
+                <li data-open-tab="#contacts">Контактная информация</li>
+            </ul>
+            <div class="tab" data-open-hash="#wholesale">
+                <div class="block" id="1">
+                    <div class="h2">Условия сотрудничества</div>
+                    <p>
+                        Оптовые продажи осуществляются только <b>юридическим лицам</b> или <b>индивидуальным предпринимателям</b>.
+                    </p>
+                    <ol>
+                        <li>При первой покупке необходимо <b>лично</b> <i>(или прислать представителя)</i> посетить наш
+                            офис для заключения договора купли-продажи.</li>
+                        <li>Минимальная сумма оптовой закупки <b>6 000</b> рублей.</li>
+                    </ol>
+                </div>
+                <div class="block" id="2">
+                    <div class="h2">Необходимые документы </div>
+                    <p>Для заключения договора необходимы следующие документы:</p>
+                    <div class="h3">Для ИП</div>
+                    <ol>
+                        <li>Свидетельство о регистрации индивидуального предпринимателя.</li>
+                        <li>Свидетельство о присвоении ИНН.</li>
+                        <li>Для представителя ИП - оригинал доверенности установленного образца с печатью ИП.</li>
+                    </ol>
+                    <div class="h3">Для ООО</div>
+                    <ol>
+                        <li>Свидетельство о регистрации ООО.</li>
+                        <li>Свидетельство о присвоении ИНН.</li>
+                        <li>Банковские реквизиты.</li>
+                        <li>Печать или доверенность установленного образца с печатью ООО.</li>
+                    </ol>
+                </div>
+                <div class="block" id="3">
+                    <div class="h2">Как заказать в первый раз </div>
+                    <ol>
+                        <li>Прийти к нам в любой <b>рабочий день</b> с <b>9:00 до 15:00</b> (первый раз) с <b>необходимыми
+                            документами</b> для заключения договора купли-продажи.</li>
+                        <li>Вас проконсультируют по всем интересующим вопросам и помогут подобрать товар, или наберут
+                            его по вашему заказу. Упакуют так, как вам необходимо.</li>
+                        <li>Оплатить товар наличными на кассе, или получить счёт на оплату по безналичному расчёту</li>
+                        <li>Забрать товар <i>(после поступления денег на счёт)</i> самовывозом, или воспользоваться <b>доставкой</b>.</li>
+                    </ol>
+                    <p>
+                        Эту процедуру необходимо пройти один раз.
+                    </p>
+
+                </div>
+                <div class="block" id="4">
+                    <div class="h2">Способы доставки </div>
+                    <ol>
+                        <li>По указанному адресу в городе Москва.</li>
+                        <li>До транспортной компании, рекомендованной клиентом.</li>
+                    </ol>
+                </div>
+                <div class="block">
+                    <a id="5"></a>
+                    <div class="h2">Способы оплаты </div>
+                    <ol>
+                        <li>В нашем офисе.</li>
+                        <li>Счёт на оплату по безналичному расчёту.</li>
+                    </ol>
+                </div>
+                {% comment %}
+                <div class="block feedback">
+                    <a id="6"></a>
+                    <div class="h2">Задать вопрос можно тут</div>
+                    <div class="form-group stretch">
+                        <label>Ваше имя</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group stretch">
+                        <label>Email</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Тема вопроса</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Вопрос</label>
+                        <textarea name="name" rows="4"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <a href="" class="btn">Отправить вопрос</a>
+                    </div>
+                </div>
+                {% endcomment %}
+            </div>
+
+            <div class="tab" data-open-hash="#contacts">
+
+                <div class="block" id="111">
+                    <div class="contact-details">
+                        <div class="contact-details__block phone">
+                            <div class="title">Наши телефоны</div>
+                            <ul>
+                                <li>+7 (495) 656-56-19</li>
+                                <li>+7 (925) 733-46-01</li>
+                                <li>+7 (499) 189-06-22</li>
+                            </ul>
+                        </div>
+                        <div class="contact-details__block message">
+                            <div class="title">Email</div>
+                            <ul>
+                                <li>aiuiuskl@yandex.ru</li>
+                            </ul>
+                        </div>
+                        <div class="contact-details__block map">
+                            <div class="title">Наш адрес</div>
+                            <ul>
+                                <li>Москва, улица Уржумская, дом 7 (вход со двора)</li>
+                            </ul>
+                        </div>
+                        <div class="contact-details__block clock">
+                            <div class="title">Время работы</div>
+                            <ul>
+                                <li><span>Понедельник-четверг</span><span>9:00 - 18:00</span></li>
+                                <li><span>Пятница</span><span>9:00 - 17:00</span></li>
+                                <li><span>Суббота</span><span>10:00 - 14:00</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="block" id="222">
+                    <div class="h2">О компании</div>
+                    <p>
+                        ИП "Юшинин А.Ю."
+                    </p>
+                    <p>
+                        Мы предлагаем колготки и бесшовное бельё ведущих мировых производителей оптом.
+                    </p>
+                    <p>
+                        Всегда рады видеть вас.
+                    </p>
+                </div>
+                <div class="block" id="333">
+                    <div class="h2">Офис на карте</div>
+
+                    <script type="text/javascript" charset="utf-8" async src="https://api-maps.yandex.ru/services/constructor/1.0/js/?sid=nz5jWrUJgm2d0jQBhvMOflV5xySm704g&amp;width=100%25&amp;height=400&amp;lang=ru_RU&amp;sourceType=constructor&amp;scroll=true"></script> </div>
+
+                {% comment %}
+                <div class="block" id="444">
+                    <div class="h2">Наши документы и лицензии</div>
+                    <ul class="documents shelf">
+                        <li><img src="/media/product_main_image/1.jpg" alt=""></li>
+                        <li><img src="/media/product_main_image/2.jpg " alt=""></li>
+                        <li><img src="/media/product_main_image/31.jpg" alt=""></li>
+                        <li><img src="/media/product_main_image/6.jpg" alt=""></li>
+                        <li><img src="/media/product_main_image/8.jpg" alt=""></li>
+                        <li><img src="/media/product_main_image/19_JSbpE2c.jpg" alt=""></li>
+                    </ul>
+                </div>
+                    <div class="block feedback" id="555">
+                    <div class="h2">Форма обратной связи</div>
+                    <div class="form-group stretch">
+                        <label>Ваше имя</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group stretch">
+                        <label>Email</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Тема вопроса</label>
+                        <input type="text">
+                    </div>
+                    <div class="form-group">
+                        <label>Вопрос</label>
+                        <textarea name="name" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <a href="" class="btn">Отправить вопрос</a>
+                    </div>
+                </div>
+                {% endcomment %}
+            </div>
+        </div>
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

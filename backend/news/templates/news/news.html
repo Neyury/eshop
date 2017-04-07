@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %} Новости {% endblock %}
+
+{% block head%}
+    <meta property="og:title" content="Белье и колготки оптом. Новости сайта" />
+    <meta name="robots" content="noindex"/>
+    <meta name="robots" content="none"/>
+{% endblock %}
+
+
+{% block breadcrumbs %}
+   <div class="container flex small">
+        <ul class="breadcrumbs">
+            <li><a href="{% url 'catalog:index' %}">Главная</a></li>
+            <li>Новости</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+
+    {% for news in news_list %}
+        <div class="news-preview">
+            <div class="news-preview__title">
+                {{news.title}}
+            </div>
+
+            <div class="news-preview__text">
+                {{news.content}}
+            </div>
+            <div class="news-preview__date">
+                {{ news.pub_date}}
+            </div>
+        </div>
+    {% endfor%}
+    {% if not news_list%}
+
+        <div class="page-message">Актуальных новостей не найдено</div>
+    {% endif %}
+{% endblock %}
+
+{% block paginator%}
+    {% if news_list %}
+        <ul class="paginator">
+            {% if news_list.paginator.num_pages < 16 %}
+                {% if news_list.has_previous  %}
+                    <li class="arrow left active"><a href="{% url 'news:news' news_list.previous_page_number%}"></a></li>
+                {% else %}
+                    <li class="arrow left"></li>
+                {% endif %}
+
+                {% for page in news_list.paginator.page_range %}
+                    {% if page == news_list.number %}
+                        <li>{{page}}</li>
+                    {% else %}
+                        <li><a href="{% url 'news:news' page %}">{{page}}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if news_list.has_next %}
+                    <li class="arrow right active"><a href="{% url 'news:news' news_list.next_page_number %}"></a></li>
+                {% else %}
+                    <li class="arrow right"></li>
+                {% endif %}
+            {% else %}
+                {% if news_list.has_previous  %}
+                    <li class="arrow left active"><a href="{% url 'news:news' news_list.previous_page_number%}"></a></li>
+                {% else %}
+                    <li class="arrow left"></li>
+                {% endif %}
+
+                {% for page in news_list.paginator.page_range %}
+                    {% if news_list.number < 9  %}
+                        {% if page == news_list.number %}
+                            <li>{{page}}</li>
+                        {% elif page == news_list.paginator.num_pages %}
+                            <li>...</li>
+                            <li><a href="{% url 'news:news' page %}">{{page}}</a></li>
+                        {% else %}
+                            {% if page < 14 %}
+                                <li><a href="{% url 'news:news' page %}">{{page}}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% elif news_list.number > news_list.paginator.num_pages|add:'-9'%}
+                        {% if page == news_list.number %}
+                            <li>{{page}}</li>
+                        {% elif page == 1 %}
+                            <li><a href="{% url 'news:news' page %}">{{page}}</a></li>
+                            <li>...</li>
+                        {% else %}
+                            {% if page > news_list.paginator.num_pages|add:'-13' %}
+                                <li><a href="{% url 'news:news' page %}">{{page}}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        {% if page == news_list.number %}
+                            <li>{{page}}</li>
+                        {% elif page == 1 %}
+                            <li><a href="{% url 'news:news' page %}">{{page}}</a></li>
+                            <li>...</li>
+                        {% elif page == news_list.paginator.num_pages %}
+                            <li>...</li>
+                            <li><a href="{% url 'news:news' page %}">{{page}}</a></li>
+                        {% else %}
+                            {% if page > news_list.number|add:'-6' and page < news_list.number|add:'6' %}
+                            <li><a href="{% url 'news:news' page %}">{{page}}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if news_list.has_next %}
+                    <li class="arrow right active"><a href="{% url 'news:news' news_list.next_page_number %}"></a></li>
+                {% else %}
+                    <li class="arrow right"></li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    {% endif%}
+{% endblock%}

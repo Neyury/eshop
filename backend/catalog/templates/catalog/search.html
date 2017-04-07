@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %} Поиск товаров {% endblock %}
+
+{% block head%}
+    <meta property="og:title" content="Белье и колготки оптом. Поиск товара" />
+    <meta name="robots" content="none"/>
+{% endblock %}
+
+{% block breadcrumbs %}
+    <div class="container flex">
+        <ul class="breadcrumbs">
+            <li><a href="{% url 'catalog:index' %}">Главная</a></li>
+            <li><a href="{% url 'catalog:catalog' %}">Каталог</a></li>
+            <li>Поиск</li>
+        </ul>
+        <span class="search-count">  всего найдено:  <b>{{product_list.paginator.count}}</b></span>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% if product_list %}
+        {% for product in product_list %}
+        <article class="preview">
+            <div class="preview__image">
+                <a href="{% url 'catalog:product' product.category_id product.id %}">
+                    <img src="{% if  product.image  %} {{product.image.image_thumbnail.url}} {% else %}{% static 'assets/preview/noimage.png' %}{% endif %}" alt="">
+                </a>
+                {% if product.discount %}
+                    <div class="preview__sticker">
+                        Акция
+                    </div>
+                {% endif %}
+            </div>
+            <div class="preview__name">
+                <a href="{% url 'catalog:product' product.category_id product.id %}">
+                    <span>{{ product.brand }} /</span>
+                    <span>{{ product.category }} </span>
+                    <div>{{ product.name }}</div>
+                </a>
+            </div>
+        </article>
+        {% endfor %}
+    {% else %}
+        <div class="page-message">По запросу "<b>{{ request.GET.find }}</b>" ничего не найдено</div>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block paginator%}
+    {% if product_list %}
+        <ul class="paginator">
+            {% if product_list.paginator.num_pages < 16 %}
+                {% if product_list.has_previous  %}
+                    <li class="arrow left active"><a href="{% url 'catalog:search' product_list.previous_page_number%}{{ url_parameters }}"></a></li>
+                {% else %}
+                    <li class="arrow left"></li>
+                {% endif %}
+
+                {% for page in product_list.paginator.page_range %}
+                    {% if page == product_list.number %}
+                        <li>{{page}}</li>
+                    {% else %}
+                        <li><a href="{% url 'catalog:search' page %}{{ url_parameters }}">{{page}}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if product_list.has_next %}
+                    <li class="arrow right active"><a href="{% url 'catalog:search' product_list.next_page_number %}{{ url_parameters }}"></a></li>
+                {% else %}
+                    <li class="arrow right"></li>
+                {% endif %}
+            {% else %}
+                {% if product_list.has_previous  %}
+                    <li class="arrow left active"><a href="{% url 'catalog:search' product_list.previous_page_number%}{{ url_parameters }}"></a></li>
+                {% else %}
+                    <li class="arrow left"></li>
+                {% endif %}
+
+                {% for page in product_list.paginator.page_range %}
+                    {% if product_list.number < 9  %}
+                        {% if page == product_list.number %}
+                            <li>{{page}}</li>
+                        {% elif page == product_list.paginator.num_pages %}
+                            <li>...</li>
+                            <li><a href="{% url 'catalog:search' page %}{{ url_parameters }}">{{page}}</a></li>
+                        {% else %}
+                            {% if page < 20 %}
+                                <li><a href="{% url 'catalog:search' page %}{{ url_parameters }}">{{page}}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% elif product_list.number > product_list.paginator.num_pages|add:'-9'%}
+                        {% if page == product_list.number %}
+                            <li>{{page}}</li>
+                        {% elif page == 1 %}
+                            <li><a href="{% url 'catalog:search' page %}{{ url_parameters }}">{{page}}</a></li>
+                            <li>...</li>
+                        {% else %}
+                            {% if page > product_list.paginator.num_pages|add:'-19' %}
+                                <li><a href="{% url 'catalog:search' page %}{{ url_parameters }}">{{page}}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        {% if page == product_list.number %}
+                            <li>{{page}}</li>
+                        {% elif page == 1 %}
+                            <li><a href="{% url 'catalog:search' page %}{{ url_parameters }}">{{page}}</a></li>
+                            <li>...</li>
+                        {% elif page == product_list.paginator.num_pages %}
+                            <li>...</li>
+                            <li><a href="{% url 'catalog:search' page %}{{ url_parameters }}">{{page}}</a></li>
+                        {% else %}
+                            {% if page > product_list.number|add:'-9' and page < product_list.number|add:'9' %}
+                            <li><a href="{% url 'catalog:search' page %}{{ url_parameters }}">{{page}}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if product_list.has_next %}
+                    <li class="arrow right active"><a href="{% url 'catalog:search' product_list.next_page_number %}{{ url_parameters }}"></a></li>
+                {% else %}
+                    <li class="arrow right"></li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    {% endif%}
+{% endblock%}

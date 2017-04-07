@@ -1,0 +1,222 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %} {{ product.name }} {% endblock %}
+
+{% block head%}
+    <meta property="og:title" content="Покупка оптом / {{ product.brand }} / {{ product.name }}" />
+
+    <meta property="og:description" content="{{ product.description}}"/>
+    <meta name="Description" content="{{ product.description}}"/>
+    <meta name="Keywords" content="{{ product.brand }},  {{ product.name }} , {{ product.description}}"/>
+
+    <meta property="og:image" content="{{request.META.HTTP_HOST}}{{ product.image.image.url }}">
+    <meta property="og:type" content="product"/>
+    <meta name="robots" content="all"/>
+{% endblock %}
+
+{% block sidebar %}
+
+{% endblock sidebar%}
+
+
+
+
+
+
+{% block breadcrumbs %}
+    <div class="container flex">
+        <ul class="breadcrumbs">
+            <li><a href="{% url 'catalog:index' %}">Главная</a></li>
+            <li><a href="{% url 'catalog:catalog' %}">Каталог</a></li>
+            {% if categories %}
+                {% for category in categories %}
+                    <li><a href="{% url 'catalog:category' category.id %}">{{category.name}}</a></li>
+                {% endfor %}
+            {% endif %}
+            <li><a href="{% url 'catalog:category' category.id %}">{{ category.name }}</a></li>
+            <li>{{ product.name }}</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+        <div class="product" itemscope >
+            <div class="product__gallery">
+                <div class="gallery  " id="gallery">
+                    <div class="image-full">
+
+                        <img>
+                        {% if  product.image or image_list%}
+                        <div class="image-zoom-zone"> </div>
+                        <div class="image-zoom-fade"> </div>
+                        {% endif %}
+                        {% if product.is_popular %}
+                            <div class="product__sticker blue">
+                                Популярное
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="image-list">
+                        <ul>
+
+                            {% if image_list%}
+                                {% for image in image_list %}
+                                    <li>
+                                        <img src="{{ image.image.url }}" alt="{% if image.name %}{{image.name}}{% endif %}">
+                                    </li>
+                                {% endfor%}
+                            {% else %}
+                                <li>
+                                    <img src="{% if  product.image  %} {{product.image.url}} {% else %}{% static 'assets/preview/noimage.png' %}{% endif %}" alt="{% if image.image.name %}{{image.image.name}}{% endif %}">
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% if  image_list%}
+                        <div class="image-zoom"> </div>
+                    {% endif %}
+                </div>
+                <div class="product__menu">
+                    {% if brand_color_list %}
+                    <div >
+                        <span  class="btn gray" onclick="toggleThis(event,2)">Палитра бренда</span>
+                        <ul class="brand-info brand-info_colors">
+                             <div class="product__brand"> {{product.brand}} </div>
+
+                            {% for color in brand_color_list %}
+                            <li >
+                                <span title="{% if color.name %}{{color.name}}{% endif %}" class="color" data-color="{{color.color}}"></span>
+                                <span>{{color.name}}</span>
+                            </li>
+                            {% endfor %}
+
+                        </ul>
+                    </div>
+                    {% endif %}
+                    {% if brand_size_list %}
+                    <div>
+                        <span class="btn gray " onclick="toggleThis(event,2)">размерная сетка бренда</span>
+                        <ul class="brand-info brand-info_sizes">
+                              <div class="product__brand"> {{product.brand}} </div>
+
+                            {% for size in brand_size_list %}
+                            <li >
+                                <span>{{size.size}}</span>
+                                <span>{{size.num_size}}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="product__content">
+                 <form action="#" method="post">
+                {% csrf_token %}
+                <input type="text" name="id" value="{{product.id}}" hidden>
+
+                <h1 class="product__name" itemprop="name"> {{product.name}} </h1>
+                <div class="product__brand" itemprop="brand"> {{product.brand}} </div>
+
+                {% comment %}
+                    <div class="product__price">
+                        <div class="product__price-new">1 300 Руб.</div>
+                        <div class="product__price-old">2 600 Руб.</div>
+                    </div>
+                {% endcomment %}
+                <div class="product__description" itemprop="description">{{product.description}}</div>
+                {% if product.composition %}
+                  <div class="product__property" itemprop="composition">
+                  <div class="h3">Состав</div>
+                      <span>{{product.composition}}</span>
+                  </div>
+                {% endif %}
+                 {% if product.den %}
+                  <div class="product__property">
+                    <div class="h3">Den</div>
+                      <span>{{product.den}}</span>
+                  </div>
+                {% endif %}
+                 {% if product.amount %}
+                  <div class="product__property">
+                  <div class="h3">Количество в упаковке</div>
+                      <span>{{product.amount}}</span>
+                  </div>
+                {% endif %}
+                {% if  size_list %}
+                <div class="h3">Размеры</div>
+                <div class="product__size">
+                    {% for size in size_list %}
+                        <div class="item">
+                            <span itemprop="size">{{ size }}</span>
+                        </div>
+                    {% endfor %}
+
+
+                </div>
+                <div class="h3">Цвета</div>
+                <div class="product__color">
+                     {% for color in color_list %}
+                            <span itemprop="color" title="{% if color.name %}{{color.name}}{% endif %}" class="color" data-color="{{color.color}}">{{color.name}}</span>
+                            {% comment %}
+                                <div class="filter-amount">
+                                    <div class="control minus">-</div>
+                                    <div class="amount">
+                                        <input type="text" name="{{ size }}{{color.color}}">
+                                    </div>
+                                    <div class="control plus">+</div>
+                                </div>c
+                            {% endcomment %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% if user.is_staff %}
+
+                <div class="product__menu">
+                    {% comment %}
+                    <input  class="btn" type="submit" value="Доабвить в корзину">
+                    {% endcomment %}
+                    <a href="/admin/catalog/product/{{product.id}}/change/" class="product__edit"></a>
+                </div>
+            {% endif %}
+             </form>
+        </div>
+            {% if product.discount %}
+                <div class="product__sticker orange">
+                    Акция
+                </div>
+            {% endif %}
+    </div>
+    {% if product_list%}
+        <div class="preview-title yellow">
+         Популярное у этого бренда
+        </div>
+    {% endif%}
+    {% for product in product_list %}
+
+        <article class="preview">
+            <div class="preview__image">
+                <a href="{% url 'catalog:product' product.category_id product.id %}">
+                    <img src="{% if  product.image  %} {{product.image.image_thumbnail.url}} {% else %}{% static 'assets/preview/noimage.png' %}{% endif %}" alt="">
+
+                </a>
+                {% if product.discount %}
+                    <div class="preview__sticker">
+                        Акция
+                    </div>
+                {% endif %}
+            </div>
+            <div class="preview__name">
+                <a href="{% url 'catalog:product' product.category_id product.id %}">
+                    <span>{{ product.brand }} /</span>
+                    <span>{{ product.category }} </span>
+                    <div>{{ product.name }}</div>
+                </a>
+            </div>
+        </article>
+        {% endfor %}
+
+
+{% endblock %}

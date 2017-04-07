@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %} Список статей {% endblock %}
+
+{% block head%}
+    <meta property="og:title" content="Белье и колготки оптом. Статьи" />
+    <meta name="Keywords" content="Покупка оптом, опт, белье, колготки, статьи, статья"/>
+    <meta name="robots" content="all"/>
+{% endblock %}
+
+
+{% block breadcrumbs %}
+   <div class="container flex small">
+        <ul class="breadcrumbs">
+            <li><a href="{% url 'catalog:index' %}">Главная</a></li>
+            <li>Статьи</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% for article in article_list %}
+        <div class="article-preview">
+            <h2 class="article-preview__title">
+            <a href="{% url 'articles:article' article.id %}"> {{article.title}}</a>
+            </h2>
+
+        {% if  article.image  %}
+            <div class="article__image ">
+                <img src="{{ article.image.url }}">
+            </div>
+        {% endif %}
+            <div class="article-preview__text">
+                {{article.get_short_content|safe}} <br><a href="{% url 'articles:article' article.id%}"> читать дальше</a>
+            </div>
+
+            <div class="article-preview__date">
+            {{ article.pub_date}}
+            </div>
+        </div>
+    {% endfor%}
+
+    {% if not article_list%}
+        <div class="page-message">Статей нет</div>
+    {% endif %}
+{% endblock %}
+
+{% block paginator%}
+    {% if article_list %}
+        <ul class="paginator">
+            {% if article_list.paginator.num_pages < 16 %}
+                {% if article_list.has_previous  %}
+                    <li class="arrow left active"><a href="{% url 'articles:articles' article_list.previous_page_number%}"></a></li>
+                {% else %}
+                    <li class="arrow left"></li>
+                {% endif %}
+
+                {% for page in article_list.paginator.page_range %}
+                    {% if page == article_list.number %}
+                        <li>{{page}}</li>
+                    {% else %}
+                        <li><a href="{% url 'articles:articles' page %}">{{page}}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if article_list.has_next %}
+                    <li class="arrow right active"><a href="{% url 'articles:articles' article_list.next_page_number %}"></a></li>
+                {% else %}
+                    <li class="arrow right"></li>
+                {% endif %}
+            {% else %}
+                {% if article_list.has_previous  %}
+                    <li class="arrow left active"><a href="{% url 'articles:articles' article_list.previous_page_number%}"></a></li>
+                {% else %}
+                    <li class="arrow left"></li>
+                {% endif %}
+
+                {% for page in article_list.paginator.page_range %}
+                    {% if article_list.number < 9  %}
+                        {% if page == article_list.number %}
+                            <li>{{page}}</li>
+                        {% elif page == article_list.paginator.num_pages %}
+                            <li>...</li>
+                            <li><a href="{% url 'articles:articles' page %}">{{page}}</a></li>
+                        {% else %}
+                            {% if page < 14 %}
+                                <li><a href="{% url 'articles:articles' page %}">{{page}}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% elif article_list.number > article_list.paginator.num_pages|add:'-9'%}
+                        {% if page == article_list.number %}
+                            <li>{{page}}</li>
+                        {% elif page == 1 %}
+                            <li><a href="{% url 'articles:articles' page %}">{{page}}</a></li>
+                            <li>...</li>
+                        {% else %}
+                            {% if page > article_list.paginator.num_pages|add:'-13' %}
+                                <li><a href="{% url 'articles:articles' page %}">{{page}}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        {% if page == article_list.number %}
+                            <li>{{page}}</li>
+                        {% elif page == 1 %}
+                            <li><a href="{% url 'articles:articles' page %}">{{page}}</a></li>
+                            <li>...</li>
+                        {% elif page == article_list.paginator.num_pages %}
+                            <li>...</li>
+                            <li><a href="{% url 'articles:articles' page %}">{{page}}</a></li>
+                        {% else %}
+                            {% if page > article_list.number|add:'-6' and page < article_list.number|add:'6' %}
+                            <li><a href="{% url 'articles:articles' page %}">{{page}}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if article_list.has_next %}
+                    <li class="arrow right active"><a href="{% url 'articles:articles' article_list.next_page_number %}"></a></li>
+                {% else %}
+                    <li class="arrow right"></li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    {% endif%}
+{% endblock%}

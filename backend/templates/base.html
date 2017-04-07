@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ru">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} {% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'assets/icon/box.png' %}" sizes="96x96">
+    <meta property="og:site_name" content="Колготки и белье оптом" />
+    <meta property="og:locale" content="ru_RU" />
+    {% block head%}
+
+    {% endblock %}
+</head>
+
+<body>
+
+    <header class="main-header">
+        <div class="main-header__top">
+            <div class="logo"><a href="{% url 'catalog:index' %}">Колготки и белье  </a><span> оптовые продажи</span></div>
+
+            <div class="contacts ">
+                <div class="paper">
+                    <div>
+                       <span> В будние дни с 9:00 до 18:00</span><span class="contacts__phone">+7 (495) 656-56-19</span>
+                    </div>
+                    <div>
+                        <span class="contacts__phone">+7 (925) 733-46-01</span>
+                    </div>
+                    <div>
+                        <span class="contacts__phone">+7 (499) 189-06-22</span>
+                    </div>
+                </div>
+                <span class="toggle icon arrow-black" onclick="toggleThis(event,2)"></span>
+            </div>
+            <div class="city"><span>Москва, ул. Уржумская, д. 7</span></div>
+        </div>
+        <div class="main-header__middle">
+            <ul class="menu__left">
+                <lI> <a href="{% url 'catalog:information' %}">Информация</a></lI>
+                <lI>  <a href="{% url 'articles:articles' %}">Статьи</a></lI>
+                <lI><a href="{% url 'news:news' %}">Новости</a></lI>
+            </ul>
+            <div class="menu__search">
+                <form action="{% url 'catalog:search' %}" method="get">
+                    <input type="text" name="find" placeholder="Поиск продуктов по названию" value="{{ request.GET.find }}">
+                    <input type="submit"  value="" class="icon search-darkgray">
+                </form>
+            </div>
+            <nav class="menu__right">
+                {% if user.is_staff %}
+                     <div class="menu__user menu__btn">
+                    {% if user.is_authenticated %}
+                        <a href="#">{{ user.username }} <span class="icon  arrow-black"></span></a>
+                        <ul class="submenu">
+                            {% comment %}
+                                <li><a href="#"></span>Настройки</a></li>
+                                <li><a href="#"></span>Мои заказы</a></li>
+                            {% endcomment %}
+                            {% if user.is_staff %}
+                                <li><a href="/admin/">Админка</a></li>
+                            {% endif %}
+                            <li><a href="{% url 'usersys:logout' %}">Выйти</a></li>
+                        </ul>
+                    {% else %}
+                        <a href="{% url 'usersys:login' %}">Войти </span></a>
+                    {% endif%}
+                    </div>
+                {% endif%}
+            </nav>
+        </div>
+        <div class="main-header__bottom">
+            <div class="menu">
+                <nav class="menu__left">
+                    {% if category_list%}
+                        {% for parent_category in category_list %}
+                            {% if not parent_category.parent %}
+                                <div class="menu__catalog menu__btn ">
+                                     <a href="{% url 'catalog:category' parent_category.id%}">
+                                     {{parent_category.name}}<span class="icon arrow-white"></span>
+                                     </a>
+                                      <ul class="submenu">
+                                        {% for category in category_list %}
+                                            {% if category.parent == parent_category%}
+                                             <li>
+                                                 <a href="{% url 'catalog:category' category.id%}">
+                                                 {{category.name}}
+                                                 </a>
+                                             </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                      </ul>
+                                 </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+
+                     <div class="menu__catalog menu__btn ">
+                                   <a href="{% url 'catalog:catalog'  %}?sort=discount">Акции</a>
+
+                     </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+
+
+
+    <div class="main">
+
+        {% block breadcrumbs %}
+
+        {% endblock %}
+
+        <div class="container flex">
+            {% block sidebar %}
+
+            {% endblock %}
+
+            <div class="content">
+                {% block content %}
+
+                {% endblock %}
+                {% block paginator %}
+
+                {% endblock%}
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="main-footer__top">
+                <div class="">
+                    <div class="h3">Меню</div>
+                    <ul>
+                        <li><a href="{% url 'catalog:index' %}">Главная</a></li>
+                        <li><a href="{% url 'catalog:catalog' %}">Каталог</a></li>
+                        <li><a href="{% url 'catalog:information' %}">Информация</a></li>
+                    </ul>
+                </div>
+
+                <div class="contacts">
+                    <div class="h3">Контакты</div>
+                    <ul>
+                        <li>+7 (495) 656-56-19</li>
+                        <li>+7 (925) 733-46-01</li>
+                        <li>+7 (499) 189-06-22</li>
+                        <li>aiuiuskl@yandex.ru</li>
+                    </ul>
+                </div>
+                <div class="address">
+                    <div class="h3">Адресс</div>
+                    <span>г. Москва, ул. Уржумская , д. 7 <br>(вход со двора)</span>
+                </div>
+                <div class="work-time">
+                    <div class="h3"> Время работы</div>
+                    <ul>
+                        <li><span>Понедельник - четверг: </span> <span> 9:00 - 18:00</span></li>
+                        <li><span>Пятница:    </span> <span> 9:00 - 17:00</span></li>
+                        <li><span>Суббота: </span> <span>10:00 - 14:00</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="main-footer__bottom">
+                &copy; kolgotki-belie.ru 2017
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/isIE.js' %}"></script>
+    {% block scripts %}
+
+    {% endblock %}
+</body>
+
+</html>

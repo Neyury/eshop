@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %} Главная {% endblock %}
+
+{% block head%}
+    <meta property="og:title" content="Белье и колготки оптом / Главная" />
+    <meta name="robots" content="all"/>
+
+    <meta property="og:description" content="Белье и колготки оптом / Главная"/>
+    <meta name="Description" content="Белье и колготки оптом / Главная"/>
+    <meta name="Keywords" content="Покупка оптом, опт, белье, колготки, главная"/>
+{% endblock %}
+
+{% block sidebar %}
+
+    {% if brand_list %}
+    <aside class="sidebar">
+        <div class="filters ">
+
+            <form  method="get" action="{% url 'catalog:catalog' %}">
+                <div class="filter filter-radio">
+                    <div class="title"><span>Сортировка</span> <input class="clear" type="submit" value="сбросить"></div>
+
+                    {% if 'discount' in sort %}
+                        <input  type="radio" id="discount" name="sort" value="discount" checked>
+                    {% else %}
+                        <input type="radio" id="discount" name="sort" value="discount">
+                    {% endif %}
+                        <label for="discount">
+                            <span>Акция</span>
+                        </label>
+                    {% if 'popular' in sort %}
+                        <input  type="radio" id="popular" name="sort" value="popular" checked>
+                    {% else %}
+                        <input type="radio" id="popular" name="sort" value="popular">
+                    {% endif %}
+                        <label for="popular">
+                            <span>Популярное</span>
+                        </label>
+                    {% if 'newpub' in sort %}
+                        <input  type="radio" id="newpub" name="sort" value="newpub" checked>
+                    {% else %}
+                        <input type="radio" id="newpub" name="sort" value="newpub">
+                    {% endif %}
+                        <label for="newpub">
+                            <span>Новое</span>
+                        </label>
+                </div>
+            {% if brand_list %}
+                <div class="filter filter-checkbox">
+                    <div class="title"><span>Бренд</span> <input class="clear" type="submit" value="сбросить"></div>
+                    {% for brand in brand_list %}
+                        {% if brand.id in selected_brands %}
+                            <input  type="checkbox" id="{{ brand.name }}" name="brand" value="{{ brand.id }}" checked>
+                        {% else %}
+                            <input type="checkbox" id="{{ brand.name }}" name="brand" value="{{ brand.id }}">
+                        {% endif %}
+                            <label for="{{ brand.name }}">
+                                <span>{{ brand.name }}</span>
+                                <span class="count">{{brand.product__count}}</span>
+                            </label>
+
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+
+            {% if den_list %}
+                <div class="filter filter-checkbox">
+                    <div class="title"><span>den</span> <input class="clear" type="submit" value="сбросить"></div>
+                    {% for item in den_list %}
+                         {% if item.den != None%}
+                            {% if item.den in selected_dens %}
+                                    <input  type="checkbox" id="{{ item.den }}" name="den" value="{{ item.den }}" checked>
+                                {% else %}
+                                    <input type="checkbox" id="{{ item.den }}" name="den" value="{{ item.den }}">
+                                {% endif %}
+                                    <label for="{{ item.den }}">
+                                        <span>{{ item.den }}</span>
+                                        <span class="count">{{item.product__count}}</span>
+                                    </label>
+                         {% endif%}
+                    {% endfor %}
+
+                </div>
+             {% endif %}
+
+            <input type="submit" class="btn orange" value="Подобрать">
+            </form>
+        </div>
+    </aside>
+    {% endif %}
+{% endblock sidebar%}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block content %}
+    {% if discount_list %}
+        <div class="preview-title orange">
+          <a href="{% url 'catalog:catalog'  %}?sort=discount">Акция</a>
+        </div>
+
+        {% for product in discount_list %}
+
+        <article class="preview">
+            <div class="preview__image">
+                <a href="{% url 'catalog:product' product.category_id product.id %}">
+                    <img src="{% if  product.image  %} {{product.image.image_thumbnail.url}} {% else %}{% static 'assets/preview/noimage.png' %}{% endif %}" alt="">
+                </a>
+                {% if product.discount %}
+                    <div class="preview__sticker">
+                        Акция
+                    </div>
+                {% endif %}
+            </div>
+            <div class="preview__name">
+                <a href="{% url 'catalog:product' product.category_id product.id %}">
+                    <span>{{ product.brand }} /</span>
+                    <span>{{ product.category }} </span>
+                    <div>{{ product.name }}</div>
+                </a>
+            </div>
+        </article>
+        {% endfor %}
+        <div class="preview-all">
+             <a href="{% url 'catalog:catalog'  %}?sort=discount">Посмотреть все</a>
+        </div>
+    {% endif %}
+
+    {% if popular_list %}
+        <div class="preview-title yellow">
+          <a href="{% url 'catalog:catalog'  %}?sort=popular">Популярные товары</a>
+        </div>
+
+        {% for product in popular_list %}
+
+            <article class="preview">
+                <div class="preview__image">
+                    <a href="{% url 'catalog:product' product.category_id product.id %}">
+                        <img src="{% if  product.image  %} {{product.image.image_thumbnail.url}} {% else %}{% static 'assets/preview/noimage.png' %}{% endif %}" alt="">
+                    </a>
+                    {% if product.discount %}
+                        <div class="preview__sticker">
+                            Акция
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="preview__name">
+                    <a href="{% url 'catalog:product' product.category_id product.id %}">
+                        <span>{{ product.brand }} /</span>
+                        <span>{{ product.category }} </span>
+                        <div>{{ product.name }}</div>
+                    </a>
+                </div>
+            </article>
+        {% endfor %}
+        <div class="preview-all">
+             <a href="{% url 'catalog:catalog'  %}?sort=popular">Посмотреть все</a>
+        </div>
+    {% endif %}
+
+    {% if newpub_list %}
+        <div class="preview-title blue">
+          <a href="{% url 'catalog:catalog'  %}?sort=newpub">Новые товары</a>
+        </div>
+
+        {% for product in newpub_list %}
+
+        <article class="preview">
+            <div class="preview__image">
+                <a href="{% url 'catalog:product' product.category_id product.id %}">
+                    <img src="{% if  product.image  %} {{product.image.image_thumbnail.url}} {% else %}{% static 'assets/preview/noimage.png' %}{% endif %}" alt="">
+                </a>
+                {% if product.discount %}
+                    <div class="preview__sticker">
+                        Акция
+                    </div>
+                {% endif %}
+            </div>
+            <div class="preview__name">
+                <a href="{% url 'catalog:product' product.category_id product.id %}">
+                    <span>{{ product.brand }} /</span>
+                    <span>{{ product.category }} </span>
+                    <div>{{ product.name }}</div>
+                </a>
+            </div>
+        </article>
+        {% endfor %}
+        <div class="preview-all">
+             <a href="{% url 'catalog:catalog'  %}?sort=newpub">Посмотреть все</a>
+        </div>
+    {% endif %}
+    {% if news_list %}
+           <h2 class="index-title">Последние новости</h2>
+
+        {% for news in news_list %}
+        <div class="news-preview">
+            <div class="news-preview__title">
+                {{news.title}}
+            </div>
+
+            <div class="news-preview__text">
+                {{news.content}}
+            </div>
+            <div class="news-preview__date">
+                {{ news.pub_date}}
+            </div>
+        </div>
+    {% endfor%}
+    {% endif %}
+{% endblock content %}
+
+

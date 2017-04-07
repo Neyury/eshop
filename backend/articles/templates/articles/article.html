@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %} Статья | {{ article.get_short_title }} {% endblock %}
+
+{% block head%}
+    <meta property="og:title" content="{{ article.title }}" />
+
+    <meta property="og:description" content="{{ article.get_short_content}}"/>
+    <meta name="Description" content="{{ article.get_short_content}}"/>
+    <meta name="Keywords" content="Покупка оптом, опт, белье, колготки, {{ article.title }}"/>
+
+    <meta property="og:image" content="{{request.META.HTTP_HOST}}{{ article.image }}">
+    <meta property="og:type" content="article"/>
+    <meta name="robots" content="all"/>
+{% endblock %}
+
+{% block content %}
+<div class="block article">
+    <h1 class="article__title ">
+        {{ article.title}}
+    </h1>
+    {% if  article.image  %}
+        <div class="article__image ">
+            <img src="{{ article.image.url }}">
+        </div>
+     {% endif %}
+
+    <div class="article__content " >
+        {{ article.content|safe}}
+    </div>
+    <div class="article__date">
+    {{ article.pub_date}}
+    </div>
+</div>
+{% endblock %}
+

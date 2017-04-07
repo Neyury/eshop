@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>COOL SUMMER 8 VITA BASSA</title>
+
+  <link rel="stylesheet" href="css\main.css">
+
+
+</head>
+<body>
+<header class="main-header">
+  <div class="main-header__top">
+      <div class="logo"><a href="index.html">Логотип</a></div>
+
+      <div class="contacts ">
+        <div class="paper">
+          <div>
+            В будние дни с 9:00 до 17:00
+            <span class="contacts__phone">9 (999) 999-99-99</span>
+          </div>
+          <div>
+            <span class="contacts__phone">7 (777) 777-77-77</span>
+          </div>
+          <div>
+            <span class="contacts__phone">8 (888) 888-88-88</span>
+          </div>
+          <div>
+            <span class="contacts__phone">5 (555) 555-55-55</span>
+          </div>
+          <div>Или вы можете заказать <a href="#">обратный звонок</a></div>
+        </div>
+        <span class="toggle icon arrow-black" onclick="toggleThis(event,2)"></span>
+      </div>
+      <div class="city"></div>
+  </div>
+  <div class="main-header__bottom">
+    <div class="menu">
+      <nav class="menu__left">
+        <div  class="menu__catalog menu__btn    open">
+          <a href="catalog.html" >Каталог<span class="icon arrow-white"></span></a>
+
+          <ul class="submenu">
+            <li><a href="catalog.html" class="icon underwear ">Бельё</a></li>
+            <li><a href="catalog.html" class="icon trousers">Колготки</a></li>
+          </ul>
+        </div>
+
+        <div class="menu__info menu__btn open">
+          <a href="info.html">Информация</a>
+        </div>
+      </nav>
+
+      <div class="menu__search">
+        <input type="text" placeholder="Поиск">
+        <input type="submit" value="" class="icon search-darkgray">
+      </div>
+
+      <nav class="menu__right">
+        <div class="menu__user menu__btn   open">
+          <a   href="#">Юрий <span class="icon arrow-white"></span></a>
+          <ul class="submenu">
+            <li><a href="#"><span class="icon setting"></span>Настройки</a></li>
+            <li><a href="#"><span class="icon order"></span>Мои заказы</a></li>
+            <hr>
+            <li><a href="#"><span class="icon exit"></span>Выход</a></li>
+          </ul>
+        </div>
+
+        <div class="menu__cart menu__btn   open">
+          <a href="cart.html" class="icon cart" >Корзина<span class="icon arrow-white"></span></a>
+          <div class="submenu">
+
+            <div class="cart-item">
+              <div class="cart-item__image">
+                <a href="article.html">
+                  <img src="assets\preview\3.jpg" alt="">
+                </a>
+              </div>
+              <ul class="cart-item__info">
+                <li><a href="article.html">VITA BASSA</a></li>
+                <li><span>Кол-во: </span><span>2</span> шт.</li>
+                <li><span>Сумма: </span><span>700</span> руб.</li>
+              </ul>
+              <div class="toggle delete-black icon"></div>
+            </div>
+
+            <div class="cart-item">
+              <div class="cart-item__image">
+                <a href="article.html">
+                  <img src="assets\preview\2.jpg" alt="">
+                </a>
+              </div>
+              <ul class="cart-item__info">
+                <li><a href="article.html">MY SHUSE</a></li>
+                <li><span>Кол-во: </span><span>1</span> шт.</li>
+                <li><span>Сумма: </span><span>1 200</span> руб.</li>
+              </ul>
+              <div class="toggle delete-black icon"></div>
+            </div>
+
+            <div class="cart-item">
+              <div class="cart-item__image">
+                <a href="article.html">
+                  <img src="assets\preview\1.jpg" alt="">
+                </a>
+              </div>
+              <ul class="cart-item__info">
+                <li><a href="article.html">COOL SUMMER</a></li>
+                <li><span>Кол-во: </span><span>3</span> шт.</li>
+                <li><span>Сумма: </span><span>3 200</span> руб.</li>
+              </ul>
+              <div class="toggle delete-black icon"></div>
+            </div>
+            <a href="cart.html" class="btn">Перейти в корзину</a>
+          </div>
+          <span class="amount">3</span>
+        </div>
+      </nav>
+    </div>
+
+  </div>
+</header>
+
+
+
+
+<div class="main">
+
+  <div class="container flex">
+    <div class="content">
+
+      <div class="auth auth_reg">
+        <form action="url" method="post">
+          <div class="auth__title">Форма регистрации</div>
+          <div class="form-group">
+            <label for="1">Логин</label>
+            <input type="text" id="1">
+
+          </div>
+          <div class="form-group">
+            <label for="2">Пароль</label>
+            <input type="text" id="2">
+
+          </div>
+          <div class="form-group">
+            <label for="3">Пароль повторно</label>
+            <input type="text" id="3">
+
+          </div>
+            <input type="submit" class="btn" value="Зарегистрироваться">
+
+
+
+
+        </form>
+
+      </div>
+
+
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+<footer class="main-footer">
+  <div class="container">
+    <div class="main-footer__top">
+      <div>
+        Сайт разрабатывается и <br>поддерживается <br>Юрием Таруниным
+        <br>
+        <a href="#" class="me">Связаться</a>
+      </div>
+
+      <div>
+        <div class="h3">Меню</div>
+        <ul>
+          <li><a href="#">Главная</a></li>
+          <li><a href="#">Каталог</a></li>
+          <li><a href="#">Информация</a></li>
+          <li><a href="#">Аккаунт</a></li>
+          <li><a href="#">Контакты</a></li>
+          <li><a href="#">Обратная связь</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="h3">Контакты</div>
+        <ul>
+          <li>8 (999) 999-99-99</li>
+          <li>8 (999) 999-99-99</li>
+          <li>8 (999) 999-99-99</li>
+          <li>8 (999) 999-99-99</li>
+          <li>support@thissite.ru</li>
+          <li><a href="#">Обратный звонок</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="h3">Адресс и время работы</div>
+        <span>г. Москва, ул. Уржумская , д. 7 (вход со двора)</span>
+
+        <ul>
+          <li><span>Пн-чт:</span> <span>9:00 - 18:00</span></li>
+          <li><span>Пт:   </span> <span>9:00 - 17:00</span></li>
+        </ul>
+
+        <div class="h3">Принимаем к оплате</div>
+        <ul class="payment">
+          <li><img src="assets/payment/yandex.png" alt=""></li>
+          <li><img src="assets/payment/webmoney.png" alt=""></li>
+        </ul>
+      </div>
+    </div>
+    <div class="main-footer__bottom">
+      &copy; Белье и колготки 2016
+    </div>
+  </div>
+</footer>
+
+<ul class="notices">
+  <li class="notice">Товар добавлен в корзину<span class="delete"></span></li>
+  <li class="notice">Товар добавлен в корзину<span class="delete"></span></li>
+  <li class="notice">Товар добавлен в кор123 123 1231 2зину<span class="delete"></span></li>
+</ul>
+
+<script src="js/flexibility.js"></script>
+<script src="js/isIE.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

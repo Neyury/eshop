@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+
+{% block title %} {{category.name}} {% endblock %}
+
+{% block head%}
+    <meta property="og:title" content="Белье и колготки оптом / {{category.name}}" />
+    <meta name="robots" content="all"/>
+
+    <meta property="og:description" content="{{category.name}}"/>
+    <meta name="Description" content="{{category.name}}"/>
+    <meta name="Keywords" content="Покупка оптом, опт, белье, колготки, {{category.name}}"/>
+{% endblock %}
+
+{% block sidebar %}
+    {% if brand_list %}
+    <aside class="sidebar">
+        <div class="filters ">
+            <form  method="get" action="{% url 'catalog:category' category.id  %}">
+                <div class="filter filter-radio">
+                    <div class="title"><span>Сортировка</span> <input class="clear" type="submit" value="сбросить"></div>
+
+                    {% if 'discount' in sort %}
+                        <input  type="radio" id="discount" name="sort" value="discount" checked>
+                    {% else %}
+                        <input type="radio" id="discount" name="sort" value="discount">
+                    {% endif %}
+                        <label for="discount">
+                            <span>Акция</span>
+                        </label>
+                    {% if 'popular' in sort %}
+                        <input  type="radio" id="popular" name="sort" value="popular" checked>
+                    {% else %}
+                        <input type="radio" id="popular" name="sort" value="popular">
+                    {% endif %}
+                        <label for="popular">
+                            <span>Популярное</span>
+                        </label>
+                    {% if 'newpub' in sort %}
+                        <input  type="radio" id="newpub" name="sort" value="newpub" checked>
+                    {% else %}
+                        <input type="radio" id="newpub" name="sort" value="newpub">
+                    {% endif %}
+                        <label for="newpub">
+                            <span>Новое</span>
+                        </label>
+                </div>
+            {% if brand_list %}
+                <div class="filter filter-checkbox">
+                    <div class="title"><span>Бренд</span> <input class="clear" type="submit" value="сбросить"></div>
+                    {% for brand in brand_list %}
+                        {% if brand.id in selected_brands %}
+                            <input  type="checkbox" id="{{ brand.name }}" name="brand" value="{{ brand.id }}" checked>
+                        {% else %}
+                            <input type="checkbox" id="{{ brand.name }}" name="brand" value="{{ brand.id }}">
+                        {% endif %}
+                            <label for="{{ brand.name }}">
+                                <span>{{ brand.name }}</span>
+                                <span class="count">{{brand.product__count}}</span>
+                            </label>
+
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+
+                {% if den_list %}
+                    <div class="filter filter-checkbox">
+                        <div class="title"><span>Den</span> <input class="clear" type="submit" value="сбросить"></div>
+                        {% for item in den_list %}
+                             {% if item.den != None%}
+                                {% if item.den in selected_dens %}
+                                        <input  type="checkbox" id="{{ item.den }}" name="den" value="{{ item.den }}" checked>
+                                    {% else %}
+                                        <input type="checkbox" id="{{ item.den }}" name="den" value="{{ item.den }}">
+                                    {% endif %}
+                                        <label for="{{ item.den }}">
+                                            <span>{{ item.den }}</span>
+                                            <span class="count">{{item.product__count}}</span>
+                                        </label>
+                             {% endif%}
+                        {% endfor %}
+
+                    </div>
+                 {% endif %}
+
+            <input type="submit" class="btn orange" value="Подобрать">
+            </form>
+        </div>
+    </aside>
+    {% endif %}
+{% endblock sidebar%}
+
+{% block breadcrumbs %}
+    <div class="container flex">
+        <ul class="breadcrumbs">
+            <li><a href="{% url 'catalog:index' %}">Главная</a></li>
+            <li><a href="{% url 'catalog:catalog' %}">Каталог</a></li>
+            {% if categories %}
+                {% for category in categories %}
+                    <li><a href="{% url 'catalog:category' category.id %}">{{category.name}}</a></li>
+                {% endfor %}
+            {% endif %}
+            <li>{{ category.name }}</li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block content %}
+    {% if product_list %}
+
+        <div class="category-title">
+         {{category.name}} <span> {{product_list.paginator.count}}</span>
+        </div>
+
+        {% for product in product_list %}
+
+        <article class="preview">
+            <div class="preview__image">
+                <a href="{% url 'catalog:product' product.category_id product.id %}">
+                    <img src="{% if  product.image  %} {{product.image.image_thumbnail.url}} {% else %}{% static 'assets/preview/noimage.png' %}{% endif %}" alt="">
+
+                </a>
+                {% if product.discount %}
+                    <div class="preview__sticker">
+                        Акция
+                    </div>
+                {% endif %}
+            </div>
+            <div class="preview__name">
+                <a href="{% url 'catalog:product' product.category_id product.id %}">
+                    <span>{{ product.brand }} /</span>
+                    <span>{{ product.category }} </span>
+                    <div>{{ product.name }}</div>
+                </a>
+            </div>
+        </article>
+        {% endfor %}
+    {% else %}
+        <div class="page-message">Ничего не найдено</div>
+    {% endif %}
+{% endblock content %}
+
+
+
+{% block paginator%}
+    {% if product_list %}
+        <ul class="paginator">
+            {% if product_list.paginator.num_pages < 16 %}
+                {% if product_list.has_previous  %}
+                    <li class="arrow left active"><a href="{% url 'catalog:category' category.id product_list.previous_page_number %}{{ url_parameters }}"></a></li>
+                {% else %}
+                    <li class="arrow left"></li>
+                {% endif %}
+
+                {% for page in product_list.paginator.page_range %}
+                    {% if page == product_list.number %}
+                        <li>{{page}}</li>
+                    {% else %}
+                         <li><a href="{% url 'catalog:category' category.id page %}{{ url_parameters }}">{{page}}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if product_list.has_next %}
+                    <li class="arrow right active"><a href="{% url 'catalog:category' category.id product_list.next_page_number %}{{ url_parameters }}"></a></li>
+                {% else %}
+                    <li class="arrow right"></li>
+                {% endif %}
+            {% else %}
+                {% if product_list.has_previous  %}
+                    <li class="arrow left active"><a href="{% url 'catalog:category' category.id product_list.previous_page_number %}{{ url_parameters }}"></a></li>
+                {% else %}
+                    <li class="arrow left"></li>
+                {% endif %}
+
+                {% for page in product_list.paginator.page_range %}
+                    {% if product_list.number < 9  %}
+                        {% if page == product_list.number %}
+                            <li>{{page}}</li>
+                        {% elif page == product_list.paginator.num_pages %}
+                            <li>...</li>
+                            <li><a href="{% url 'catalog:category' category.id page %}{{ url_parameters }}">{{page}}</a></li>
+                        {% else %}
+                            {% if page < 14 %}
+                                <li><a href="{% url 'catalog:category' category.id page %}{{ url_parameters }}">{{page}}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% elif product_list.number > product_list.paginator.num_pages|add:'-9'%}
+                        {% if page == product_list.number %}
+                            <li>{{page}}</li>
+                        {% elif page == 1 %}
+                            <li><a href="{% url 'catalog:category' category.id page %}{{ url_parameters }}">{{page}}</a></li>
+                            <li>...</li>
+                        {% else %}
+                            {% if page > product_list.paginator.num_pages|add:'-13' %}
+                                <li><a href="{% url 'catalog:category' category.id page %}{{ url_parameters }}">{{page}}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        {% if page == product_list.number %}
+                            <li>{{page}}</li>
+                        {% elif page == 1 %}
+                            <li><a href="{% url 'catalog:category' category.id page %}{{ url_parameters }}">{{page}}</a></li>
+                            <li>...</li>
+                        {% elif page == product_list.paginator.num_pages %}
+                            <li>...</li>
+                            <li><a href="{% url 'catalog:category' category.id page %}{{ url_parameters }}">{{page}}</a></li>
+                        {% else %}
+                            {% if page > product_list.number|add:'-6' and page < product_list.number|add:'6' %}
+                            <li><a href="{% url 'catalog:category' category.id page %}{{ url_parameters }}">{{page}}</a></li>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if product_list.has_next %}
+                    <li class="arrow right active"><a href="{% url 'catalog:category' category.id product_list.next_page_number %}{{ url_parameters }}"></a></li>
+                {% else %}
+                    <li class="arrow right"></li>
+                {% endif %}
+            {% endif %}
+        </ul>
+    {% endif%}
+{% endblock%}
